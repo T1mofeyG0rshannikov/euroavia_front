@@ -1,0 +1,30 @@
+.content {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.box {
+  display: flex;
+  flex-direction: column;
+  gap: 4px 0;
+}
+
+.boxName {
+  color: var(--color-1);
+  font-size: var(--font-md);
+  font-weight: 300;
+}
+
+.link {
+  color: var(--color-2);
+
+  &:hover {
+    color: var(--color-1);
+  }
+}
+
+.contentButton {
+  width: 100%;
+}

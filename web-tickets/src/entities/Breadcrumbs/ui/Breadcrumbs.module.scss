@@ -1,0 +1,21 @@
+.breadcrumbs {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+.link {
+  color: var(--primary-text);
+}
+
+.disabled {
+  pointer-events: none;
+  opacity: .6;
+}
+
+.active {
+  padding: 4px;
+  border-radius: 3px;
+  color: var(--white);
+  background: var(--background-gradient);
+}

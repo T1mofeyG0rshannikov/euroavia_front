@@ -1,0 +1,21 @@
+.counter {
+  display: flex;
+  border: 1px solid gray;
+  border-radius: 3px;
+color: var(--primary-text);
+
+  * {
+  padding: 4px 8px;
+  }
+
+}
+
+.minus {
+border-right:1px solid gray;
+}
+
+
+
+.plus {
+  border-left:1px solid gray;
+}

@@ -1,0 +1,37 @@
+.selector {
+  height: 46px;
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.button {
+  width: 30px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--white);
+
+  &:first-child {
+    border-right: 1px solid gray;
+  }
+
+  &.active {
+    background-color: #238b13;
+    color: var(--white);
+  }
+}
+
+.error {
+  border: 1px solid red;
+
+
+  .button {
+
+
+    &:first-child {
+      border-right: 1px solid red;
+    }
+  }
+}

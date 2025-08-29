@@ -1,0 +1,51 @@
+.dropdown {
+  width: 100%;
+}
+
+.wrapper {
+  max-height: 0;
+  overflow: hidden;
+  transition: .6s all linear;
+
+  .content {
+    padding: 20px 0;
+  }
+
+  &.opened {
+    max-height: 3000px;
+  }
+
+}
+
+.button {
+  max-width: 360px;
+  width: 100%;
+  padding: 14px;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid gray ;
+
+  svg {
+    transition: .4s all ease-in-out;
+  }
+
+  &.opened {
+    border-bottom: 1px solid transparent;
+    background-color: #55a1c7;
+    svg {
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.clear {
+  padding: 10px 0;
+  border: 0;
+
+  &.opened {
+    background-color: transparent;
+  }
+
+
+
+}

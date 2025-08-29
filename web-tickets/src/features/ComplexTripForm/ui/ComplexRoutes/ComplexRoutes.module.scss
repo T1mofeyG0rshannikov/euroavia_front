@@ -1,0 +1,19 @@
+.routes {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.item {
+  display: flex;
+  gap: 2px;
+  position: relative;
+}
+
+
+.cancelButton {
+  position: absolute;
+  right: 10px;
+  bottom: 50%;
+  transform: translateY(50%);
+}

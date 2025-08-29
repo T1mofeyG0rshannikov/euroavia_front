@@ -1,0 +1,40 @@
+.wrapper {
+  position: relative;
+  display: inline-block;
+}
+
+.button {
+  min-width: 120px;
+  height: 45px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+  padding: 10px;
+  background: var(--white);
+}
+
+
+.list {
+
+  max-height: 200px;
+  overflow: hidden;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 5px;
+  list-style-type: none;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.item {
+  padding: 8px;
+  cursor: pointer;
+
+}
+
+.item:hover {
+  background-color: #f1f1f1;
+}

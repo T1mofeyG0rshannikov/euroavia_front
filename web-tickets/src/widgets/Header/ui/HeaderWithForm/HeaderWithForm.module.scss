@@ -1,0 +1,36 @@
+.block {
+  background: var(--background-gradient);
+  padding: 50px 0;
+  position: relative;
+  text-align: center;
+}
+
+.wrapper {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.title,
+.subtitle {
+  color: var(--white);
+  font-weight: 300;
+}
+
+.title {
+  font-size: var(--font-xl);
+}
+
+.subtitle {
+  font-size: var(--font-lg);
+  margin-top: 30px;
+  margin-bottom: 40px;
+}
+
+
+.button {
+  display: flex;
+  gap: 0 8px;
+  align-items: center;
+  margin-top: 12px;
+  font-size: var(--font-sm);
+}

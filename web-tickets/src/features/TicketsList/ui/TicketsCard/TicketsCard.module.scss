@@ -1,0 +1,53 @@
+.card {
+  width: 100%;
+  padding: 20px;
+  border: 1px solid #000;
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.tickets {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  border-right: 1px solid gray;
+  padding-right: 10px;
+
+}
+
+.ticket {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  .item:last-child {
+    text-align: right;
+  }
+
+  &:nth-child(n + 2) {
+    border-top: 1px solid gray;
+  }
+}
+
+.time {
+  font-size: 30px;
+}
+
+.date {
+  font-size: 22px;
+}
+
+.item,
+.end {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.end {
+  align-items: center;
+}

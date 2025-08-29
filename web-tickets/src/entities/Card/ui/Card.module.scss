@@ -1,0 +1,60 @@
+.card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  flex-grow: 1;
+}
+
+.tickets {
+  border-radius: 3px;
+  border: 1px solid var(--primary-text);
+  flex-grow: 1;
+  padding: 8px;
+}
+
+.route {
+  color: #0a58ca;
+  font-size: var(--font-lg);
+}
+
+.time {
+  font-size: 30px;
+}
+
+.date {
+  font-size: 22px;
+}
+
+.content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 12px 0;
+}
+
+.item {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  text-align: center;
+
+  &:first-child {
+    text-align: start;
+  }
+
+  &:last-child {
+    text-align: end;
+  }
+}
+
+.bottom {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+
+}
+
+.baggage {
+  margin-top: 10px;
+  text-align: center;
+}

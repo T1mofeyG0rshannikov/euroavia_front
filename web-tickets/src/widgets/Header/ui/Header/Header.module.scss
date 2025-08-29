@@ -1,0 +1,14 @@
+.header {
+  box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .075);
+  background: var(--background-gradient);
+  padding: 6px 0;
+}
+
+.wrapper {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

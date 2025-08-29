@@ -1,0 +1,31 @@
+@use 'reset';
+@use 'variables';
+@use 'fonts';
+
+
+body {
+  font-family: 'Segoe UI', sans-serif;
+  font-weight: 400;
+  font-size: var(--font-nm);
+  background-color: var(--white);
+  color: var(--primary-text);
+  overflow-x: hidden;
+}
+
+button {
+  line-height: 1;
+}
+
+a {
+  color: var(--primary-text);
+}
+
+h3 {
+  font-size: var(--font-xl);
+}
+
+h1,
+h2, h3, h4, h5 {
+  font-weight: 700;
+}
+

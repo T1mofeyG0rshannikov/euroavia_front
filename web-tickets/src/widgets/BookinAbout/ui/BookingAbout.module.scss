@@ -1,0 +1,32 @@
+.about {
+  padding-top: 30px;
+  padding-bottom: 100px;
+}
+
+.wrapper {
+  display: flex;
+  gap: 20px;
+  align-items: flex-start
+}
+
+.box {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.linkBox {
+  flex-grow: 1;
+  max-width: 420px;
+}
+
+.innerBox {
+  display: flex;
+  border-left: #00a2ff solid 6px;
+}
+
+.secondBox {
+  border-left: #4eec1f solid 6px;
+
+}
