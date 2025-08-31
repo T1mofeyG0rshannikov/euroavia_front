@@ -8,16 +8,28 @@ import { useState, useRef } from 'react'
 import { fetchAirports } from '../../../ComplexTripForm/api'
 
 export const TravelInputs = ({ errors, register, getValues, setValue }) => {
-	const changeValue = () => {
-		const { departure, destination } = getValues()
-		setValue('departure', destination)
-		setValue('destination', departure)
-	}
-
 	const [originAirports, setOriginAirports] = useState([])
 	const [originInput, setOriginInput] = useState('')
 	const [originAirportId, setOriginAirportId] = useState(null)
 	const originInputRef = useRef()
+
+	const [destinationAirports, setDestinationAirports] = useState([])
+	const [destinationInput, setDestinationInput] = useState('')
+	const [destinationAirportId, setDestinationAirportId] = useState(null)
+	const destinationInputRef = useRef()
+
+	const changeValue = () => {
+		// Меняем значения в инпутах
+		setOriginInput(destinationInput)
+		setDestinationInput(originInput)
+		// Меняем значения в форме
+		setValue('departure', destinationAirportId)
+		setValue('destination', originAirportId)
+		// Меняем id
+		const tempId = originAirportId
+		setOriginAirportId(destinationAirportId)
+		setDestinationAirportId(tempId)
+	}
 
 	async function handleInputChange(e){
 		const value = e.target.value
@@ -35,13 +47,8 @@ export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 		setOriginInput(`${airport.iata} — ${airport.city.name} (${airport.name_russian ? airport.name_russian : airport.name}), ${airport.country.name}`)
 		setOriginAirportId(airport.id)
 		setOriginAirports([])
-		setValue('departure', airport.iata) // или airport.id, если нужно id
+		setValue('departure', airport.id)
 	}
-
-	const [destinationAirports, setDestinationAirports] = useState([])
-	const [destinationInput, setDestinationInput] = useState('')
-	const [destinationAirportId, setDestinationAirportId] = useState(null)
-	const destinationInputRef = useRef()
 
 	async function handleDestinationInputChange(e) {
 		const value = e.target.value
@@ -59,7 +66,7 @@ export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 		setDestinationInput(`${airport.iata} — ${airport.city.name} (${airport.name_russian ? airport.name_russian : airport.name}), ${airport.country.name}`)
 		setDestinationAirportId(airport.id)
 		setDestinationAirports([])
-		setValue('destination', airport.iata) // или airport.id, если нужно id
+		setValue('destination', airport.id)
 	}
 
 	return (

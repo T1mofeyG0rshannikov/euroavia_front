@@ -27,7 +27,7 @@ export const DateRangePicker = ({ watch, setValue, control, errors }) => {
 							}
 						}}
 						error={errors.startDate}
-						placeholder={'Откуда'}
+						placeholder={'Дата туда'}
 						startDate={startDate}
 						endDate={endDate}
 						selected={field.value}
@@ -44,7 +44,7 @@ export const DateRangePicker = ({ watch, setValue, control, errors }) => {
 							selectsEnd
 							startDate={startDate}
 							endDate={endDate}
-							placeholder={'Куда'}
+							placeholder={'Дата обратно'}
 							error={errors.endDate}
 							minDate={startDate || new Date()}
 							onChange={date => {

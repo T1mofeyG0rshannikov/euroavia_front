@@ -1,7 +1,9 @@
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import { useState } from 'react'
 
 import { PassengersSelector } from '@/features/PassengersSelector'
+import { fetchTickets } from '@/features/ComplexTripForm/api'
 
 import { PAGE_ROUTE } from '@/shared/config/PageRoute/PageRoute'
 import { Button } from '@/shared/ui/Button/Button'
@@ -13,15 +15,33 @@ import cls from './SimpleTripForm.module.scss'
 
 export const SimpleTripForm = ({ ChangeBlockButton }) => {
 	const navigate = useNavigate()
+	const [searchResult, setSearchResult] = useState(null)
 	const {
 		handleSubmit,
 		formState: { errors },
 		register,
+		setValue,
+		getValues,
+		watch,
+		control,
 		...others
 	} = useForm()
 
-	const onSubmit = e => {
-		navigate(PAGE_ROUTE.TICKETS)
+	const onSubmit = async (data) => {
+		// Собираем данные для запроса
+		const payload = {
+			origin_airport_ids: [getValues('departure')],
+			destination_airport_ids: [getValues('destination')],
+			departure_at: getValues('startDate') ? new Date(getValues('startDate')).toISOString() : null,
+			return_at: getValues('endDate') ? new Date(getValues('endDate')).toISOString() : null,
+			adults: 1, // Можно доработать, если нужно брать из PassengersSelector
+			childrens: 0,
+			infants: 0
+		}
+		const result = await fetchTickets(payload)
+		console.log(result)
+		setSearchResult(result)
+		// navigate(PAGE_ROUTE.TICKETS) // если нужно переходить
 	}
 
 	return (
@@ -33,16 +53,20 @@ export const SimpleTripForm = ({ ChangeBlockButton }) => {
 				<TravelInputs
 					errors={errors}
 					register={register}
-					{...others}
+					setValue={setValue}
+					getValues={getValues}
 				/>
 				<DateRangePicker
 					register={register}
 					errors={errors}
-					{...others}
+					setValue={setValue}
+					watch={watch}
+					control={control}
 				/>
 				<PassengersSelector
 					error={errors.passengers}
 					register={register}
+					setValue={setValue}
 					{...others}
 				/>
 			</div>

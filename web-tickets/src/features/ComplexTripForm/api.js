@@ -19,3 +19,14 @@ export async function fetchAirports(startwith){
     const response = await fetch(`${BACKEND_URL}/airports/${encodeURIComponent(startwith)}`)
     return await getData(response)
 }
+
+export async function fetchTickets(payload) {
+    const response = await fetch(`${BACKEND_URL}/tickets`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    });
+    return await getData(response);
+}
