@@ -4,7 +4,7 @@ import ArrowLeftRight from '@icons/arrow-left-right.svg'
 
 import cls from './TravelInputs.module.scss'
 import { Suggestions } from '../../../ComplexTripForm/ui/ComplexRoutes/Suggestions'
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { fetchAirports } from '../../../ComplexTripForm/api'
 
 export const TravelInputs = ({ errors, register, getValues, setValue }) => {
@@ -15,32 +15,66 @@ export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 	}
 
 	const [originAirports, setOriginAirports] = useState([])
+	const [originInput, setOriginInput] = useState('')
+	const [originAirportId, setOriginAirportId] = useState(null)
+	const originInputRef = useRef()
 
 	async function handleInputChange(e){
-		console.log("NONOFE")
 		const value = e.target.value
+		setOriginInput(value)
 		if (value.length > 0){
 			const airports = await fetchAirports(value)
-			console.log(airports.data)
 			setOriginAirports(airports.data)
+		} else {
+			setOriginAirports([])
 		}
+		setOriginAirportId(null)
+	}
+
+	function handleOriginSelect(airport) {
+		setOriginInput(`${airport.iata} — ${airport.city.name} (${airport.name_russian ? airport.name_russian : airport.name}), ${airport.country.name}`)
+		setOriginAirportId(airport.id)
+		setOriginAirports([])
+		setValue('departure', airport.iata) // или airport.id, если нужно id
+	}
+
+	const [destinationAirports, setDestinationAirports] = useState([])
+	const [destinationInput, setDestinationInput] = useState('')
+	const [destinationAirportId, setDestinationAirportId] = useState(null)
+	const destinationInputRef = useRef()
+
+	async function handleDestinationInputChange(e) {
+		const value = e.target.value
+		setDestinationInput(value)
+		if (value.length > 0) {
+			const airports = await fetchAirports(value)
+			setDestinationAirports(airports.data)
+		} else {
+			setDestinationAirports([])
+		}
+		setDestinationAirportId(null)
+	}
+
+	function handleDestinationSelect(airport) {
+		setDestinationInput(`${airport.iata} — ${airport.city.name} (${airport.name_russian ? airport.name_russian : airport.name}), ${airport.country.name}`)
+		setDestinationAirportId(airport.id)
+		setDestinationAirports([])
+		setValue('destination', airport.iata) // или airport.id, если нужно id
 	}
 
 	return (
 		<div className={cls.inputs}>
-			<div>
-				<h1>hello</h1>
+			<div style={{ position: 'relative' }}>
 				<Input
 					error={!!errors.departure}
 					placeholder={'Откуда'}
-					{...register('departure', {
-						required: true,
-						onChange: (event) => handleInputChange(event)
-					})}
+					value={originInput}
+					onChange={handleInputChange}
+					ref={originInputRef}
 				/>
 				<Suggestions
 					airports={originAirports}
-					onSelect={(airport) => setValue(`routes.${index}.departure`)}
+					onSelect={handleOriginSelect}
 				/>
 			</div>
 			<button
@@ -50,13 +84,19 @@ export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 			>
 				<ArrowLeftRight fill={'var(--color-1)'} />
 			</button>
-			<Input
-				error={!!errors.destination}
-				placeholder={'Куда'}
-				{...register('destination', {
-					required: true
-				})}
-			/>
+			<div style={{ position: 'relative' }}>
+				<Input
+					error={!!errors.destination}
+					placeholder={'Куда'}
+					value={destinationInput}
+					onChange={handleDestinationInputChange}
+					ref={destinationInputRef}
+				/>
+				<Suggestions
+					airports={destinationAirports}
+					onSelect={handleDestinationSelect}
+				/>
+			</div>
 		</div>
 	)
 }

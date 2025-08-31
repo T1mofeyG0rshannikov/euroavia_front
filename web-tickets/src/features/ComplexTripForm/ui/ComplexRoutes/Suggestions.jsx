@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react"
+import { useEffect } from "react"
 
-export const Suggestions = ({ airports, value, onSelect }) => {
-  const [suggestions, setSuggestions] = useState([])
-
+export const Suggestions = ({ airports, onSelect }) => {
   useEffect(() => {
     console.log(airports)
   }, [airports])
 
   const handleSelect = (airport) => {
-    setQuery(`${airport.iata} — ${airport.city}, ${airport.airport}, ${airport.country}`)
-    setSuggestions([])
+    if (onSelect) onSelect(airport)
   }
 
   return (

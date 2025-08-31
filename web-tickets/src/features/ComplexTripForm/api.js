@@ -13,10 +13,9 @@ export async function getData(response){
     };
 }
 
-const BACKEND_URL = `http://127.0.0.1:9000`
+const BACKEND_URL = `https://service.anketus.ru`
 
 export async function fetchAirports(startwith){
-    const response = await fetch(`${BACKEND_URL}/airports/${startwith}`)
-
+    const response = await fetch(`${BACKEND_URL}/airports/${encodeURIComponent(startwith)}`)
     return await getData(response)
 }
