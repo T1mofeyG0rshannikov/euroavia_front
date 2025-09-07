@@ -3,7 +3,7 @@ import { Route, Routes } from 'react-router-dom'
 
 import { BookingPage } from '@/pages/BookingPage'
 import { PaymentPage } from '@/pages/PaymentPage'
-import { TicketsPage } from '@/pages/TicketsPage/ui/TicketsPage'
+import { TicketsPage } from '../../../../pages/TicketsPage/TicketsPage'
 
 import { PAGE_ROUTE } from '@/shared/config/PageRoute/PageRoute'
 

@@ -8,3 +8,81 @@
   max-width: 220px;
   margin: 30px auto 0;
 }
+
+.loaderWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 180px;
+  font-size: 18px;
+  color: #fff; // цвет текста теперь белый
+  gap: 16px;
+}
+
+.loader {
+  border: 4px solid #f3f3f3;
+  border-top: 4px solid #0078d2;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  animation: spin 1s linear infinite;
+  margin-bottom: 8px;
+}
+
+.planeLoader {
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.euroaviaLoader {
+  width: 180px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 8px;
+}
+
+.simpleSpinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid #e3f1fb;
+  border-top: 5px solid #0078d2;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: 12px;
+}
+
+.notFoundBlock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 48px;
+  color: #222; // теперь текст черный
+  text-align: center;
+  gap: 16px;
+}
+
+.notFoundIcon {
+  font-size: 48px;
+}
+
+.notFoundTitle {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.notFoundText {
+  font-size: 16px;
+  opacity: 0.85;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+}

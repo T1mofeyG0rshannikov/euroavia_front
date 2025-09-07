@@ -14,71 +14,67 @@ import { TravelInputs } from '../TravelInputs/TravelInputs'
 import cls from './SimpleTripForm.module.scss'
 
 export const SimpleTripForm = ({ ChangeBlockButton }) => {
-	const navigate = useNavigate()
-	const [searchResult, setSearchResult] = useState(null)
-	const {
-		handleSubmit,
-		formState: { errors },
-		register,
-		setValue,
-		getValues,
-		watch,
-		control,
-		...others
-	} = useForm()
+    const navigate = useNavigate()
+    const [searchResult, setSearchResult] = useState(null)
+    const [loading, setLoading] = useState(false)
+    const {
+        handleSubmit,
+        formState: { errors },
+        register,
+        setValue,
+        getValues,
+        watch,
+        control,
+        ...others
+    } = useForm()
 
-	const onSubmit = async (data) => {
-		// Собираем данные для запроса
-		const payload = {
-			origin_airport_ids: [getValues('departure')],
-			destination_airport_ids: [getValues('destination')],
-			departure_at: getValues('startDate') ? new Date(getValues('startDate')).toISOString() : null,
-			return_at: getValues('endDate') ? new Date(getValues('endDate')).toISOString() : null,
-			adults: 1, // Можно доработать, если нужно брать из PassengersSelector
-			childrens: 0,
-			infants: 0
-		}
-		const result = await fetchTickets(payload)
-		console.log(result)
-		setSearchResult(result)
-		// navigate(PAGE_ROUTE.TICKETS) // если нужно переходить
-	}
+    const onSubmit = async () => {
+        const { adults = 1, childrens = 0, infants = 0 } = getValues('passengers') || {}
+        const params = new URLSearchParams({
+            origin: getValues('departure'),
+            destination: getValues('destination'),
+            departure_at: getValues('startDate') ? new Date(getValues('startDate')).toISOString() : '',
+            return_at: getValues('endDate') ? new Date(getValues('endDate')).toISOString() : '',
+            adults,
+            childrens,
+            infants
+        })
+        navigate(`/tickets?${params.toString()}`)
+    }
 
-	return (
-		<form
-			className={cls.form}
-			onSubmit={handleSubmit(onSubmit)}
-		>
-			<div className={cls.top}>
-				<TravelInputs
-					errors={errors}
-					register={register}
-					setValue={setValue}
-					getValues={getValues}
-				/>
-				<DateRangePicker
-					register={register}
-					errors={errors}
-					setValue={setValue}
-					watch={watch}
-					control={control}
-				/>
-				<PassengersSelector
-					error={errors.passengers}
-					register={register}
-					setValue={setValue}
-					{...others}
-				/>
-			</div>
-
-			{ChangeBlockButton}
-
-			<Button
-				className={cls.button}
-				type={'submit'}
-			>
-				Поиск
-			</Button>
-		</form>
-	)
+    return (
+        <form
+            className={cls.form}
+            onSubmit={handleSubmit(onSubmit)}
+        >
+            <div className={cls.top}>
+                <TravelInputs
+                    errors={errors}
+                    register={register}
+                    setValue={setValue}
+                    getValues={getValues}
+                />
+                <DateRangePicker
+                    register={register}
+                    errors={errors}
+                    setValue={setValue}
+                    watch={watch}
+                    control={control}
+                />
+                <PassengersSelector
+                    error={errors.passengers}
+                    register={register}
+                    setValue={setValue}
+                    {...others}
+                />
+            </div>
+            {ChangeBlockButton}
+            <Button
+                className={cls.button}
+                type={'submit'}
+            >
+                Поиск
+            </Button>
+        </form>
+    )
 }

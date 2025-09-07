@@ -19,8 +19,13 @@ export const PassengersSelector = ({ error, setValue,register, ...others }) => {
 	useCloseModal(ref, setShowList)
 
 	useEffect(() => {
-		setValue('passengers', `${allCount} пасс, ${classType === 'economy' ? 'эконом' : 'бизнес'}`)
-	}, [passengers, classType])
+		setValue('passengers', {
+			adults: passengers.adults,
+			childrens: passengers.to12Years,
+			infants: passengers.to2Years,
+			classType: classType
+		});
+	}, [passengers, classType, setValue])
 
 	const allCount = passengers.adults + passengers.to12Years + passengers.to2Years
 	const handlePassengerChange = (type, value) => {
