@@ -20,7 +20,9 @@ export const Suggestions = ({ airports, onSelect }) => {
               onClick={() => handleSelect(a)}
               className={styles.suggestionItem}
             >
-              {a.iata} — {a.city.name}({a.name_russian ? a.name_russian : a.name}), {a.country.name}
+              <span className={styles.iataCode}>{a.iata}</span>
+              {' — '}
+              {a.city.name}({a.name_russian ? a.name_russian : a.name}), {a.country.name}
             </li>
           ))}
         </ul>
