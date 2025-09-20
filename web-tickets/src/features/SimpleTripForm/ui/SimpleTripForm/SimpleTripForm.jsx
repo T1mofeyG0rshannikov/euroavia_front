@@ -39,7 +39,20 @@ export const SimpleTripForm = ({ ChangeBlockButton }) => {
             childrens,
             infants
         })
-        navigate(`/tickets?${params.toString()}`)
+        const originId = getValues('departure')
+        const destinationId = getValues('destination')
+        const cityFromName = 'CityFrom' // Замените на фактическое значение
+        const cityToName = 'CityTo' // Замените на фактическое значение
+        const departureDate = getValues('startDate') ? new Date(getValues('startDate')).toISOString() : ''
+        const returnDate = getValues('endDate') ? new Date(getValues('endDate')).toISOString() : ''
+
+        navigate(
+            `/tickets?origin=${originId}&destination=${destinationId}` +
+            `&cityFrom=${encodeURIComponent(cityFromName)}` +
+            `&cityTo=${encodeURIComponent(cityToName)}` +
+            `&departure_at=${departureDate}` +
+            `&return_at=${returnDate}`
+        )
     }
 
     return (

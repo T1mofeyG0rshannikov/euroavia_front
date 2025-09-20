@@ -20,6 +20,10 @@
   list-style: none;
 }
 
+.suggestionsList{
+  text-align: left;
+}
+
 .suggestionItem {
   padding: 8px 14px;
   cursor: pointer;
@@ -28,7 +32,6 @@
   transition: background 0.15s;
   border-bottom: 1px solid #f2f2f2;
   display: flex;
-  align-items: center;
   gap: 8px;
 }
 .suggestionItem:last-child { border-bottom: none; }

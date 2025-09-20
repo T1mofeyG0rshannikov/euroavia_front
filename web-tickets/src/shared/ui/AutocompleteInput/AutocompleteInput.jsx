@@ -71,6 +71,32 @@ export const AutocompleteInput = ({ onSelect }) => {
     if (onSelect) onSelect(airportIds)
   }
 
+  /**
+   * Форматирует строку аэропорта для выпадающего списка.
+   */
+  function formatAirportName(airport) {
+    if (!airport) return '';
+
+    const code = airport.iata || '';
+    const cityName =
+      airport.city?.name_russian ||
+      airport.city?.name ||
+      airport.city?.name_english ||
+      '';
+    const airportName =
+      airport.name_russian ||
+      airport.name ||
+      airport.name_english ||
+      '';
+    const countryName =
+      airport.country?.name_russian ||
+      airport.country?.name ||
+      airport.country?.name_english ||
+      '';
+
+    return `${code} — ${cityName} (${airportName}) ${countryName}`.trim();
+  }
+
   return (
     <div className={styles.autocompleteWrapper}>
       <input
