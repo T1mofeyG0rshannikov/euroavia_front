@@ -1,3 +1,6 @@
+import API_URL from '../../shared/config/constants'
+
+
 export async function getData(response){
     let data = null
     try{
@@ -13,15 +16,13 @@ export async function getData(response){
     };
 }
 
-const BACKEND_URL = `https://service.anketus.ru`
-
 export async function fetchAirports(startwith){
-    const response = await fetch(`${BACKEND_URL}/airports/${encodeURIComponent(startwith)}`)
+    const response = await fetch(`${API_URL}/airports/${encodeURIComponent(startwith)}`)
     return await getData(response)
 }
 
 export async function fetchTickets(payload) {
-    const response = await fetch(`${BACKEND_URL}/tickets`, {
+    const response = await fetch(`${API_URL}/tickets`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -10,7 +10,7 @@ import { Button } from '@/shared/ui/Button/Button'
 
 import { DateRangePicker } from '../DateRangePicker/DateRangePicker'
 import { TravelInputs } from '../TravelInputs/TravelInputs'
-
+import { useAirport } from '../../../../context/AirportContext'
 import cls from './SimpleTripForm.module.scss'
 
 export const SimpleTripForm = ({ ChangeBlockButton }) => {
@@ -28,6 +28,8 @@ export const SimpleTripForm = ({ ChangeBlockButton }) => {
         ...others
     } = useForm()
 
+    const { originAirport, setOriginAirport, destinationAirport, setDestinationAirport } = useAirport();
+    console.log(originAirport)
     const onSubmit = async () => {
         const { adults = 1, childrens = 0, infants = 0 } = getValues('passengers') || {}
         const params = new URLSearchParams({
@@ -41,8 +43,8 @@ export const SimpleTripForm = ({ ChangeBlockButton }) => {
         })
         const originId = getValues('departure')
         const destinationId = getValues('destination')
-        const cityFromName = 'CityFrom' // Замените на фактическое значение
-        const cityToName = 'CityTo' // Замените на фактическое значение
+        const cityFromName = originAirport.city.name
+        const cityToName = destinationAirport.city.name
         const departureDate = getValues('startDate') ? new Date(getValues('startDate')).toISOString() : ''
         const returnDate = getValues('endDate') ? new Date(getValues('endDate')).toISOString() : ''
 

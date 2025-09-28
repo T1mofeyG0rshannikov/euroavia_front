@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import cls from '../../features/SimpleTripForm/ui/SimpleTripForm/SimpleTripForm.module.scss'
 import { fetchTickets } from '../../features/ComplexTripForm/api'
 import { useNavigate } from 'react-router-dom';
+import API_URL from '../../shared/config/constants';
 
 function useFilterTickets() {
     const [filteredTickets, setFilteredTickets] = useState([])
@@ -11,7 +12,7 @@ function useFilterTickets() {
     const filterTickets = async (filters) => {
         setFilterLoading(true)
         try {
-            const response = await fetch('https://service.anketus.ru/filter-tickets', {
+            const response = await fetch(`${API_URL}/filter-tickets`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(filters)

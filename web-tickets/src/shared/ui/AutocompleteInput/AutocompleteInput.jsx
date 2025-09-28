@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react'
 import styles from './AutocompleteInput.module.scss'
+import API_URL from '../../config/constants'
 
 export const AutocompleteInput = ({ onSelect }) => {
   const [query, setQuery] = useState('')
@@ -13,8 +14,8 @@ export const AutocompleteInput = ({ onSelect }) => {
       return
     }
     const [countries, cities] = await Promise.all([
-      fetch(`https://service.anketus.ru/countries/${encodeURIComponent(value)}`).then(r => r.json()).catch(() => []),
-      fetch(`https://service.anketus.ru/cities/${encodeURIComponent(value)}`).then(r => r.json()).catch(() => [])
+      fetch(`${API_URL}/countries/${encodeURIComponent(value)}`).then(r => r.json()).catch(() => []),
+      fetch(`${API_URL}/cities/${encodeURIComponent(value)}`).then(r => r.json()).catch(() => [])
     ])
     let result = []
     // Страны

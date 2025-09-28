@@ -6,6 +6,8 @@ import cls from './TravelInputs.module.scss'
 import { Suggestions } from '../../../ComplexTripForm/ui/ComplexRoutes/Suggestions'
 import { useState, useRef } from 'react'
 import { fetchAirports } from '../../../ComplexTripForm/api'
+import { useAirport } from '@/context/AirportContext';
+
 
 export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 	const [originAirports, setOriginAirports] = useState([])
@@ -17,6 +19,8 @@ export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 	const [destinationInput, setDestinationInput] = useState('')
 	const [destinationAirportId, setDestinationAirportId] = useState(null)
 	const destinationInputRef = useRef()
+
+	const { originAirport, setOriginAirport, destinationAirport, setDestinationAirport } = useAirport();
 
 	const changeValue = () => {
 		// Меняем значения в инпутах
@@ -44,6 +48,8 @@ export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 	}
 
 	function handleOriginSelect(airport) {
+		console.log(airport)
+		setOriginAirport(airport)
 		setOriginInput(`${airport.iata} — ${airport.city.name} (${airport.name_russian ? airport.name_russian : airport.name}), ${airport.country.name}`)
 		setOriginAirportId(airport.id)
 		setOriginAirports([])
@@ -63,6 +69,8 @@ export const TravelInputs = ({ errors, register, getValues, setValue }) => {
 	}
 
 	function handleDestinationSelect(airport) {
+		console.log(airport)
+		setDestinationAirport(airport)
 		setDestinationInput(`${airport.iata} — ${airport.city.name} (${airport.name_russian ? airport.name_russian : airport.name}), ${airport.country.name}`)
 		setDestinationAirportId(airport.id)
 		setDestinationAirports([])
