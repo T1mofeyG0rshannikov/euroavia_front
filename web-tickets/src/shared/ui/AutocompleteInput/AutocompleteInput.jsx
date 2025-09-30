@@ -1,6 +1,6 @@
 import React, { useState, useRef } from 'react'
 import styles from './AutocompleteInput.module.scss'
-import API_URL from '../../config/constants'
+import { API_URL } from '../../config/constants'
 
 export const AutocompleteInput = ({ onSelect }) => {
   const [query, setQuery] = useState('')

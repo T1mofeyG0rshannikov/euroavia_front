@@ -1,4 +1,4 @@
-import API_URL from '../../shared/config/constants'
+import { API_URL } from '../../shared/config/constants'
 
 
 export async function getData(response){
