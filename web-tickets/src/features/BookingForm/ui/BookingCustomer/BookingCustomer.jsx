@@ -3,6 +3,7 @@ import { Box } from '@/shared/ui/Box/Box'
 import { BookingInput } from '../BookingInput/BookingInput'
 
 import cls from './BookingCustomer.module.scss'
+import { useUser } from '@/context/UserContext'
 
 export const BookingCustomer = ({ register, errors }) => {
 	return (
@@ -10,17 +11,18 @@ export const BookingCustomer = ({ register, errors }) => {
 			<h5 className={cls.title}>Покупатель</h5>
 
 			<div className={cls.flex}>
-				<BookingInput
+				{/*<BookingInput
 					placeholder={'+7(XXX)XXX-XXXX'}
 					register={register('phone')}
 					error={errors.phone}
 					mask='+______________________________'
 					replacement={{ _: /\d/ }}
-				/>
+				/>*/}
 				<BookingInput
 					placeholder={'Электронная почта'}
-					register={register('mail')}
-					error={errors.mail}
+					register={register('email')}
+					error={errors.email}
+					disabled={true}
 				/>
 			</div>
 		</Box>

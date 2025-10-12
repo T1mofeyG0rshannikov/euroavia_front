@@ -21,8 +21,10 @@ export const DropdownButton = ({ register, setValue }) => {
 		<div
 			className={cls.wrapper}
 			ref={ref}
+			style={{width: "210px"}}
 		>
 			<input
+				style={{width: "100%", textAlign: "left"}}
 				onClick={toggleDropdown}
 				type={'button'}
 				className={cls.button}
@@ -31,7 +33,7 @@ export const DropdownButton = ({ register, setValue }) => {
 
 			{isOpen && (
 				<ul className={cls.list}>
-					<li
+					{/*<li
 						className={cls.item}
 						onClick={() => handleClick('Опция 1')}
 					>
@@ -48,7 +50,7 @@ export const DropdownButton = ({ register, setValue }) => {
 						onClick={() => handleClick('Опция 3')}
 					>
 						Опция 3
-					</li>
+					</li>*/}
 				</ul>
 			)}
 		</div>

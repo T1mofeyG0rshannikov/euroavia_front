@@ -21,7 +21,7 @@ export async function fetchAirports(startwith){
     return await getData(response)
 }
 
-export async function fetchTickets(payload) {
+export async function parseTickets(payload) {
     const response = await fetch(`${API_URL}/tickets`, {
         method: 'POST',
         headers: {

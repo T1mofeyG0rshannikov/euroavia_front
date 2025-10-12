@@ -1,4 +1,4 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useEffect } from 'react';
 
 // 1. Создаем контекст
 const AirportContext = createContext();
@@ -23,17 +23,38 @@ function airportReducer(state, action) {
 
 // 4. Провайдер
 export function AirportProvider({ children }) {
-  const [state, dispatch] = useReducer(airportReducer, initialState);
+  // читаем данные из localStorage при инициализации
+  const [state, dispatch] = useReducer(
+    airportReducer,
+    initialState,
+    (initial) => {
+      const storedOrigin = localStorage.getItem('originAirport');
+      const storedDestination = localStorage.getItem('destinationAirport');
+      return {
+        originAirport: storedOrigin ? JSON.parse(storedOrigin) : initial.originAirport,
+        destinationAirport: storedDestination ? JSON.parse(storedDestination) : initial.destinationAirport,
+      };
+    }
+  );
 
   const setOriginAirport = (airport) => {
-    console.log(airport)
+    console.log(airport);
     dispatch({ type: 'SET_ORIGIN', payload: airport });
   };
 
   const setDestinationAirport = (airport) => {
-    console.log(airport)
+    console.log(airport);
     dispatch({ type: 'SET_DESTINATION', payload: airport });
   };
+
+  // сохраняем в localStorage при изменении
+  useEffect(() => {
+    localStorage.setItem('originAirport', JSON.stringify(state.originAirport));
+  }, [state.originAirport]);
+
+  useEffect(() => {
+    localStorage.setItem('destinationAirport', JSON.stringify(state.destinationAirport));
+  }, [state.destinationAirport]);
 
   return (
     <AirportContext.Provider value={{ ...state, setOriginAirport, setDestinationAirport }}>

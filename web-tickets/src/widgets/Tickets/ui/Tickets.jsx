@@ -7,27 +7,53 @@ import { Container } from '@/shared/ui/Container/Container'
 import { Loading } from '@/shared/ui/Loading/Loading'
 
 import cls from './Tickets.module.scss'
+import { fetchTickets } from '../api'
+import { useLocation } from 'react-router-dom'
+
 
 export const Tickets = () => {
-	const [isLoading, setIsLoading] = useState(true)
-	useEffect(() => {
-		const timer = setTimeout(() => {
-			setIsLoading(false)
-		}, 3000)
+	const [tickets, setTickets] = useState([]);
+	const [ticketsLoading, setTicketsLoading] = useState(false)
 
-		return () => clearTimeout(timer)
+	const { search } = useLocation();
+    const params = new URLSearchParams(search);
+	
+	const loadTickets = async () => {
+		const payload = {
+            origin_airport_ids: [params.get('origin')],
+            destination_airport_ids: [params.get('destination')],
+            departure_at: params.get('departure_at'),
+            return_at: params.get('return_at'),
+            adults: Number(params.get('adults')),
+            childrens: Number(params.get('childrens')),
+            infants: Number(params.get('infants')),
+			//price_min:,
+			//proce_max:,
+        };
+
+		console.log(payload)
+
+		const response = await fetchTickets(payload)
+		console.log(response, "r")
+		if (response.status === 200){
+			setTickets(response.data)
+		}
+	}
+
+	useEffect(() => {
+		loadTickets()
 	}, [])
+
+	useEffect(() => {
+		console.log(tickets, "t")
+	}, [tickets])
 
 	return (
 		<Container className={cls.row}>
-			{isLoading ? (
-				<Loading />
-			) : (
-				<>
-					<TicketsFilter />
-					<TicketsList />
-				</>
-			)}
+
+		<TicketsFilter tickets={tickets} setTickets={setTickets} ticketsLoading={ticketsLoading} setTicketsLoading={setTicketsLoading} />
+		<TicketsList tickets={tickets} ticketsLoading={ticketsLoading} />
+
 		</Container>
 	)
 }

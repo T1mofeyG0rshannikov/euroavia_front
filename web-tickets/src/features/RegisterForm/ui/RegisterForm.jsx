@@ -5,7 +5,7 @@ import setToken, { getUserAPI } from '../../../utils/user';
 import { useUser } from '../../../context/UserContext';
 
 
-export const RegisterForm = ({onClose}) => {
+export const RegisterForm = ({onClose, openLoginForm}) => {
   const [formData, setFormData] = useState({
     firstName: '',
     secondName: '',
@@ -35,43 +35,12 @@ export const RegisterForm = ({onClose}) => {
         setComplited(Object.values(formData).every(value => value.trim().length > 0))
     }, [formData])
 
-  const validateForm = () => {
-    const newErrors = {};
-
-    if (!formData.firstName.trim()) {
-      newErrors.firstName = 'Имя обязательно';
-    }
-
-    if (!formData.secondName.trim()) {
-      newErrors.secondName = 'Фамилия обязательна';
-    }
-
-    if (!formData.email) {
-      newErrors.email = 'Email обязателен';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'Некорректный формат email';
-    }
-
-    if (!formData.password) {
-      newErrors.password = 'Пароль обязателен';
-    } else if (formData.password.length < 6) {
-      newErrors.password = 'Пароль должен быть не менее 6 символов';
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      newErrors.confirmPassword = 'Пароли не совпадают';
-    }
-
-    return newErrors;
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    const formErrors = validateForm();
     setErrors({});    
-    if (Object.keys(formErrors).length === 0) {
+    if (Object.keys(errors).length === 0) {
         console.log('Данные для отправки:', formData);
         const response = await registerAPI(formData);
         console.log(response)
@@ -100,17 +69,14 @@ export const RegisterForm = ({onClose}) => {
             setErrors(updatedErrors)
         }
     } else {
-      setErrors(formErrors);
+      setErrors(errors);
     }
     
     setIsSubmitting(false);
   };
 
-  console.log(isSubmitting, "sub")
-  console.log(complited, "comp")
-
   return (
-    <div className="registration-container">
+    <div className="modal-container">
       <form className="registration-form" onSubmit={handleSubmit}>
         <div style={{
             display: "flex",
@@ -211,6 +177,8 @@ export const RegisterForm = ({onClose}) => {
           />
           {errors.confirmPassword && <span className="error-message">{errors.confirmPassword}</span>}
         </div>
+        
+        <a className='link' onClick={() => openLoginForm()}>Уже есть аккаунт? Войти</a>
 
         <button 
           type="submit" 

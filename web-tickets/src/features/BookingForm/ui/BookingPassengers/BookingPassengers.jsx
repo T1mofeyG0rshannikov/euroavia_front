@@ -8,13 +8,13 @@ import { GenderSelector } from '../GenderSelector/GenderSelector'
 
 import cls from './BookingPassengers.module.scss'
 
-export const BookingPassengers = ({ values, register, errors, setValue, trigger }) => {
+export const BookingPassengers = ({ values, register, errors, setValue, trigger, onSubmit, isComplete }) => {
 	return (
 		<Box className={cls.passengers}>
 			<h5 className={cls.title}>Пассажиры</h5>
 			<p className={cls.text}>Данные вводить латиницей, как в загранпаспорте</p>
 
-			<div className={cls.flex}>
+			<div className={cls.flex} style={{flexDirection: "column", alignItems: "start"}}>
 				<GenderSelector
 					value={values.gender}
 					setValue={setValue}
@@ -23,20 +23,23 @@ export const BookingPassengers = ({ values, register, errors, setValue, trigger 
 					trigger={trigger}
 				/>
 				<BookingInput
+				style={{width: "210px"}}
 					placeholder={'Имя'}
 					register={register('name')}
 					error={errors.name}
 				/>
 				<BookingInput
+				style={{width: "210px"}}
 					placeholder={'Фамилия'}
-					register={register('lastName')}
-					error={errors.lastName}
+					register={register('secondName')}
+					error={errors.secondName}
 				/>
 				<DropdownButton
 					setValue={setValue}
 					register={register('country')}
 				/>
 				<BookingInput
+					style={{width: "210px"}}
 					placeholder={'Дата Рождения'}
 					error={errors.date}
 					mask='dd.mm.yyyy'
@@ -44,11 +47,13 @@ export const BookingPassengers = ({ values, register, errors, setValue, trigger 
 					register={register('date')}
 				/>
 				<BookingInput
+					style={{width: "210px"}}
 					placeholder={'Загран Паспорт'}
-					register={register('abroad')}
-					error={errors.abroad}
+					register={register('passport')}
+					error={errors.passport}
 				/>
 				<BookingInput
+					style={{width: "210px"}}
 					placeholder={'Срок Действия'}
 					register={register('term')}
 					error={errors.term}
@@ -66,8 +71,9 @@ export const BookingPassengers = ({ values, register, errors, setValue, trigger 
 				персональных данных
 			</Checkbox>
 			<Button
+				disabled={!isComplete}
+				onClick={() => onSubmit()}
 				className={cls.button}
-				type={'submit'}
 			>
 				Забронировать
 			</Button>

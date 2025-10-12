@@ -3,7 +3,8 @@ import { Route, Routes } from 'react-router-dom'
 
 import { BookingPage } from '@/pages/BookingPage'
 import { PaymentPage } from '@/pages/PaymentPage'
-import { TicketsPage } from '../../../../pages/TicketsPage/TicketsPage'
+import { TicketsPage } from '@/pages/TicketsPage'
+import { SearchPage } from '@/pages/SearchPage'
 
 import { PAGE_ROUTE } from '@/shared/config/PageRoute/PageRoute'
 
@@ -13,6 +14,10 @@ export const AppRoutes = () => {
 			<Route
 				path={PAGE_ROUTE.HOME}
 				element={<Homepage />}
+			/>
+			<Route
+				path={PAGE_ROUTE.SEARCH}
+				element={<SearchPage />}
 			/>
 			<Route
 				path={PAGE_ROUTE.TICKETS}

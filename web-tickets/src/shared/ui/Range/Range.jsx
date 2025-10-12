@@ -3,16 +3,14 @@ import { useMemo } from 'react'
 
 import './Range.scss'
 
-export const Range = ({ diapason, setValue, children, name }) => {
-	const diapasonCopy = useMemo(() => diapason, [])
-
+export const Range = ({ diapason, value, setValue, children, name }) => {
 	return (
 		<div className={'range'}>
 			<Slider
 				range
-				min={diapasonCopy[0]}
-				max={diapasonCopy[1]}
-				value={diapason}
+				min={diapason[0]}
+				max={diapason[1]}
+				value={value}
 				onChange={value => {
 					setValue(name, value)
 				}}

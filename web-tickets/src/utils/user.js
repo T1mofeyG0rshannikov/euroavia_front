@@ -2,7 +2,7 @@ import { ACCESS_TOKEN_KEY, API_URL } from "../shared/config/constants";
 import { getData } from "../features/ComplexTripForm/api";
 
 
-function getToken(){
+export function getToken(){
     return localStorage.getItem(ACCESS_TOKEN_KEY)
 }
 

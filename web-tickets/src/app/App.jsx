@@ -2,6 +2,7 @@ import { AppRoutes } from './provider/router/ui/AppRoutes'
 import { AirportProvider } from '@/context/AirportContext';
 import { UserProvider } from '../context/UserContext';
 import './styles/global.scss'
+import { ModalsProvider } from '../context/ModalsContext';
 
 
 export const App = () => {
@@ -9,7 +10,9 @@ export const App = () => {
 		<div className={'app'}>
 			<AirportProvider>
 				<UserProvider>
-					<AppRoutes />
+					<ModalsProvider>
+						<AppRoutes />
+					</ModalsProvider>
 				</UserProvider>
 			</AirportProvider>
 		</div>

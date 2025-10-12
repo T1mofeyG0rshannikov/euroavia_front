@@ -1,4 +1,5 @@
-import React, { createContext, useReducer, useContext } from 'react';
+import React, { createContext, useReducer, useContext, useEffect } from 'react';
+import { getUserAPI } from '../utils/user';
 
 // 1. Создаем контекст
 const UserContext = createContext();
@@ -26,6 +27,20 @@ export function UserProvider({ children }) {
     console.log(user)
     dispatch({ type: 'SET', payload: user });
   };
+
+  const checkAuth = async () => {
+    const response = await getUserAPI()
+    if (response.status === 200){
+      if (response.data != null){
+        setUser(response.data)
+      }
+    }
+  }
+
+  // Автоматическая проверка авторизации при монтировании
+  useEffect(() => {
+    checkAuth();
+  }, []);
 
   return (
     <UserContext.Provider value={{ ...state, setUser }}>

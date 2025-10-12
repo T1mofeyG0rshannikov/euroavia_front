@@ -3,6 +3,10 @@ import { Header } from '@/widgets/Header'
 import { Top } from '@/widgets/Top'
 
 import { PAGE_ROUTE } from '@/shared/config/PageRoute/PageRoute'
+import { useAirport } from '@/context/AirportContext'
+import { fetchTicket } from '@/features/TicketsList/api'
+import { useLocation } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 
 const breadcrumbs = [
 	{
@@ -25,16 +29,34 @@ const breadcrumbs = [
 		disabled: true
 	}
 ]
+
 export const BookingPage = () => {
+	const { originAirport, setOriginAirport, destinationAirport, setDestinationAirport } = useAirport();
+
+	const [ticket, setTicket] = useState(null)
+
+	async function getTicket(ticketId){
+		const response = await fetchTicket(ticketId)
+		if (response.status === 200){
+			setTicket(response.data)
+		}
+	}
+	const { search } = useLocation();
+	const params = new URLSearchParams(search);
+
+    useEffect(() => {
+		getTicket(params.get('ticket'))
+	}, [])
+
 	return (
 		<>
 			<Header />
 			<Top
 				title={'Бронирование авиабилетов'}
-				subtitle={'Ереван — Санкт Петербург • 28 августа'}
+				subtitle={`${originAirport ? originAirport.city.name : ''} — ${destinationAirport ? destinationAirport.city.name : ''} • 28 августа`}
 				breadcrumbs={breadcrumbs}
 			/>
-			<BookingAbout />
+			<BookingAbout ticket={ticket} />
 		</>
 	)
 }

@@ -6,16 +6,20 @@ import { Card } from '@/entities/Card'
 
 import { Box } from '@/shared/ui/Box/Box'
 import { Container } from '@/shared/ui/Container/Container'
-
+import { fetchTicket } from '../../../features/TicketsList/api'
 import cls from './BookingAbout.module.scss'
+import { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 
-export const BookingAbout = () => {
+
+export const BookingAbout = ({ticket}) => {
 	return (
+		ticket !== null ?
 		<section className={cls.about}>
 			<Container>
 				<div className={cls.wrapper}>
 					<Box className={cls.box}>
-						<Card />
+						<Card ticket={ticket} />
 						<p> Указано местное время вылета и прилета</p>
 						<Box className={cls.innerBox}>
 							{' '}
@@ -29,8 +33,8 @@ export const BookingAbout = () => {
 						<Link to={'#'}>Правила и условия тарифа</Link>
 					</Box>
 				</div>
-				<BookingForm />
+				<BookingForm ticket={ticket} />
 			</Container>
-		</section>
+		</section> : <></>
 	)
 }

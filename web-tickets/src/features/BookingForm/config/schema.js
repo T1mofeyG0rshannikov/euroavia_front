@@ -1,13 +1,12 @@
 import * as yup from 'yup'
 
 export const schema = yup.object({
-	mail: yup.string().email().required(),
-	phone: yup.string().required(),
+	email: yup.string().email().required(),
 	gender: yup.string().oneOf(['Мужской', 'Женский'], 'Выберите пол').required('Пол обязателен'),
 	name: yup.string().required(),
-	lastName: yup.string().required(),
-	abroad: yup.string().required(),
-	term: yup.string().required(),
+	secondName: yup.string().required(),
+	passport: yup.string().required(),
+	expiration_date: yup.string().required(),
 	date: yup
 		.string()
 

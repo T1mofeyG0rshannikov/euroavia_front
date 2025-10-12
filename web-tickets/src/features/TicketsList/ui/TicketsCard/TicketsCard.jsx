@@ -1,53 +1,52 @@
-import Img from '@/shared/assets/img.png'
 import { PAGE_ROUTE } from '@/shared/config/PageRoute/PageRoute'
 import { Button } from '@/shared/ui/Button/Button'
 
 import cls from './TicketsCard.module.scss'
+import { fetchTicket } from '../../api';
+import { extractHoursMinutes, formatDate, minutesToHoursMinutes, getTransfersString } from '@/utils/ticketFormatters';
 
-export const TicketsCard = () => {
+
+export const TicketsCard = ({ticket, setTicket}) => {
+	async function openTicketModal(ticketId){
+		const response = await fetchTicket(ticketId)
+		if (response.status === 200){
+			setTicket(response.data)
+		}
+	}
+
 	return (
-		<li className={cls.card}>
+		<li onClick={() => openTicketModal(ticket.id)} className={cls.card}>
 			<div className={cls.tickets}>
-				<div className={cls.ticket}>
-					<div className={cls.item}>
-						<span className={cls.time}> 21:10</span>
-						<span className={cls.date}> 21 авг 2025, Чт</span>
-						<span> Ереван EVN</span>
-					</div>
-					<div className={cls.item}>
-						<span> Без пересадок</span>
-						<span> -</span>
-						<span> в пути: 4ч 15м</span>
-					</div>
-					<div className={cls.item}>
-						<span className={cls.time}> 00:25</span>
-						<span className={cls.date}>22 авг 2025, Пт</span>
-						<span>Санкт Петербург LED</span>
-					</div>
-				</div>
-				<div className={cls.ticket}>
-					<div className={cls.item}>
-						<span className={cls.time}> 21:10</span>
-						<span className={cls.date}> 21 авг 2025, Чт</span>
-						<span> Ереван EVN</span>
-					</div>
-					<div className={cls.item}>
-						<span> Без пересадок</span>
-						<span> -</span>
-						<span> в пути: 4ч 15м</span>
-					</div>
-					<div className={cls.item}>
-						<span className={cls.time}> 00:25</span>
-						<span className={cls.date}>22 авг 2025, Пт</span>
-						<span>Санкт Петербург LED</span>
-					</div>
-				</div>
+				{
+					ticket.itineraries.map(itinerary =>
+						<div className={cls.ticket}>
+							<div className={cls.item}>
+								<span className={cls.time}> {extractHoursMinutes(itinerary.departure_at)}</span>
+								<span className={cls.date}> {formatDate(itinerary.departure_at)}</span>
+								<span> {itinerary.origin_airport.city.name } {itinerary.origin_airport.iata}</span>
+							</div>
+							<div className={cls.item}>
+								<span>{getTransfersString(itinerary.transfers)}</span>
+								<span> -</span>
+								<span> в пути: {minutesToHoursMinutes(itinerary.duration)}</span>
+							</div>
+							<div className={cls.item}>
+								<span className={cls.time}> {extractHoursMinutes(itinerary.return_at)}</span>
+								<span className={cls.date}>{formatDate(itinerary.return_at)}</span>
+								<span> {itinerary.destination_airport.city.name } {itinerary.destination_airport.iata}</span>
+							</div>
+						</div>
+					)
+				}
 			</div>
 			<div className={cls.end}>
 				<span>
-					<img src={Img} />
+					<p>{ticket.itineraries[0].airline.name_russian}</p>
 				</span>
-				<Button to={PAGE_ROUTE.TICKET_BOOKING}>19 555 ₽</Button>
+				<Button to={{
+					pathname: PAGE_ROUTE.TICKET_BOOKING,
+					search: `?ticket=${ticket.id}`
+				}}>{ ticket.price } ₽</Button>
 			</div>
 		</li>
 	)

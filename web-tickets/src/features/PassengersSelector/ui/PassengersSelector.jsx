@@ -7,10 +7,11 @@ import { PassengersList } from './PassengersList'
 
 import cls from './PassengersSelector.module.scss'
 
-export const PassengersSelector = ({ error, setValue,register, ...others }) => {
+export const PassengersSelector = ({ setValue, register }) => {
 	const ref = useRef()
 	const [showList, setShowList] = useState(false)
 	const [classType, setClassType] = useState('economy')
+	const [allCount, setAllCount] = useState(1);
 	const [passengers, setPassengers] = useState({
 		adults: 1,
 		to12Years: 0,
@@ -27,11 +28,26 @@ export const PassengersSelector = ({ error, setValue,register, ...others }) => {
 		});
 	}, [passengers, classType, setValue])
 
-	const allCount = passengers.adults + passengers.to12Years + passengers.to2Years
+	//const allCount = passengers.adults + passengers.to12Years + passengers.to2Years
 	const handlePassengerChange = (type, value) => {
 		if (allCount >= 9 && passengers[type] <= value) return
 		setPassengers(prevState => ({ ...prevState, [type]: value }))
 	}
+
+	useEffect(() => {
+		setAllCount(passengers.adults + passengers.to12Years + passengers.to2Years)
+	}, [passengers])
+
+	const [inputText, setInputText] = useState('');
+
+	useEffect(() => {
+		setInputText(`${allCount} пасс, ${classType === 'economy' ? 'эконом' : 'бизнес'}`)
+	}, [allCount, classType])
+
+	useEffect(() => {
+		console.log(inputText, "it")
+	}, [inputText])
+
 	return (
 		<div
 			className={cls.wrapper}
@@ -39,7 +55,7 @@ export const PassengersSelector = ({ error, setValue,register, ...others }) => {
 		>
 			<Input
 				type='button'
-				value={`${allCount} пасс, ${classType === 'economy' ? 'эконом' : 'бизнес'}`}
+				value={inputText}
 				onClick={() => setShowList(true)}
 				{...register('passengers')}
 			/>
