@@ -6,10 +6,7 @@ import { Card } from '@/entities/Card'
 
 import { Box } from '@/shared/ui/Box/Box'
 import { Container } from '@/shared/ui/Container/Container'
-import { fetchTicket } from '../../../features/TicketsList/api'
 import cls from './BookingAbout.module.scss'
-import { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
 
 
 export const BookingAbout = ({ticket}) => {

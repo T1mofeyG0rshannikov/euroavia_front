@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import { TicketModal } from '../../../TicketModal/ui/TicketModal';
 
 
-export const TicketsList = ({tickets, ticketsLoading}) => {
+export const TicketsList = ({filteredTickets, ticketsLoading}) => {
     const [ticket, setTicket] = useState(null);
     const [isOpenTicketModal, setOpenTicketModal] = useState(false);
     console.log(ticketsLoading, "tickets loading in list")
@@ -14,9 +14,9 @@ export const TicketsList = ({tickets, ticketsLoading}) => {
 
   return (
     <>
-      {tickets !== undefined ? 
+      {filteredTickets !== undefined ? 
       <ul className={cls.list} style={ticketsLoading ? {opacity: .5, pointerEvents: "none"} : {}}>
-        {tickets.map(ticket => <TicketsCard ticket={ticket} setTicket={setTicket} />)}
+        {filteredTickets.map(ticket => <TicketsCard ticket={ticket} setTicket={setTicket} />)}
       </ul> : <></>}
       {isOpenTicketModal ? 
         <TicketModal ticket={ticket} setOpen={setOpenTicketModal} /> : <></>

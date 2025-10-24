@@ -1,7 +1,8 @@
-import { API_URL } from "../../shared/config/constants"
-import { getData } from "../../features/ComplexTripForm/api"
+import { API_URL } from "@/shared/config/constants"
+import { getData } from "@/features/ComplexTripForm/api"
 
 export async function fetchTickets(filters){
+    console.log("ftcing with payload", filters)
     const response = await fetch(`${API_URL}/filter-tickets`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

@@ -38,12 +38,10 @@ export function AirportProvider({ children }) {
   );
 
   const setOriginAirport = (airport) => {
-    console.log(airport);
     dispatch({ type: 'SET_ORIGIN', payload: airport });
   };
 
   const setDestinationAirport = (airport) => {
-    console.log(airport);
     dispatch({ type: 'SET_DESTINATION', payload: airport });
   };
 

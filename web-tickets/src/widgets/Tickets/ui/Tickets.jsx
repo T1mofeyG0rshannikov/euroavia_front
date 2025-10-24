@@ -12,7 +12,15 @@ import { useLocation } from 'react-router-dom'
 
 
 export const Tickets = () => {
+	useEffect(() => {
+		document.body.classList.add(cls.bggray)
+		
+		return () => {
+			document.body.classList.remove(cls.bggray)
+		}
+	}, [])
 	const [tickets, setTickets] = useState([]);
+	const [filteredTickets, setFilteredTickets] = useState(tickets);
 	const [ticketsLoading, setTicketsLoading] = useState(false)
 
 	const { search } = useLocation();
@@ -48,11 +56,15 @@ export const Tickets = () => {
 		console.log(tickets, "t")
 	}, [tickets])
 
+	useEffect(() => {
+		console.log(filteredTickets, "filtered tickets")
+	}, [filteredTickets])
+
 	return (
 		<Container className={cls.row}>
 
-		<TicketsFilter tickets={tickets} setTickets={setTickets} ticketsLoading={ticketsLoading} setTicketsLoading={setTicketsLoading} />
-		<TicketsList tickets={tickets} ticketsLoading={ticketsLoading} />
+		<TicketsFilter tickets={tickets} setFilteredTickets={setFilteredTickets} ticketsLoading={ticketsLoading} setTicketsLoading={setTicketsLoading} />
+		<TicketsList filteredTickets={filteredTickets} ticketsLoading={ticketsLoading} />
 
 		</Container>
 	)

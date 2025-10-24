@@ -24,13 +24,10 @@ function formatISODate(dateStr){
 }
 
 export const BookingForm = ({ticket}) => {
-
-	console.log(ticket)
 	const { user, setUser} = useUser()
 	const { openLoginForm, closeLoginForm, openRegisterForm, closeRegisterForm, openRequiredLoginForm, closeRequiredLoginForm } = useModals();
 
 	useEffect(() => {
-		console.log(user, "suer")
 		if (user == null){
 			openRequiredLoginForm()
 		} else{
@@ -65,7 +62,6 @@ export const BookingForm = ({ticket}) => {
 
 	const isComplete = useMemo(() => {
 	// Проверяем, что каждое значение не пустое
-	console.log(values)
 	return Object.values(values).every(v => v && v.toString().trim().length > 0);
 	}, [values]);
 
@@ -81,8 +77,6 @@ export const BookingForm = ({ticket}) => {
 	}
 
 	const onSubmit = async(e) => {
-		console.log(values)
-
         const passengers = [{
 			first_name: values.name,
 			second_name: values.secondName,

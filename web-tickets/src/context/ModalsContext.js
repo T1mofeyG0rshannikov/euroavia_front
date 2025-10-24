@@ -18,13 +18,11 @@ export function ModalsProvider({ children }) {
     }
 
     const closeRequiredLoginForm = () => {
-        console.log("CLOSE REQUIRED")
         setOpenLogin(false);
         setLoginRequired(false)
     }
 
     const closeLoginForm = () => {
-        console.log("CLOSED FORM")
         setOpenLogin(false);
         setLoginRequired(false);
     }

@@ -3,14 +3,14 @@ import { useForm } from 'react-hook-form'
 import { Checkbox } from '@/shared/ui/Checkbox/Checkbox'
 import { Dropdown } from '@/shared/ui/Dropdown/Dropdown'
 
-import { Range } from '../../../shared/ui/Range/Range'
+import { Range } from '@/shared/ui/Range/Range'
 
 import cls from './TicketsFilter.module.scss'
 
 import 'rc-slider/assets/index.css'
 import { useEffect, useState } from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { fetchTickets } from '../../../widgets/Tickets/api'
+import { fetchTickets } from '@/widgets/Tickets/api'
 
 
 const transfers = [
@@ -31,23 +31,45 @@ const transfers = [
 	}
 ]
 
+function formatMinutesToHHMM(totalMinutes) {
+  const hours = Math.floor(totalMinutes / 60);  // Получаем целые часы
+  const minutes = totalMinutes % 60;             // Получаем оставшиеся минуты
 
-export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLoading}) => {
+  // Форматируем часы и минуты, добавляя ведущий ноль, если нужно
+  const formattedHours = String(hours).padStart(2, '0');
+  const formattedMinutes = String(minutes).padStart(2, '0');
+
+  return `${formattedHours}:${formattedMinutes}`; // Возвращаем строку в формате hh:mm
+}
+
+function getMinutesFromISO(isoString){
+	const date = new Date(isoString);
+
+	const hours = date.getHours();
+	const minutes = date.getMinutes();
+
+	return hours * 60 + minutes
+}
+
+export const TicketsFilter = ({tickets, setFilteredTickets, ticketsLoading, setTicketsLoading}) => {
+	const { search } = useLocation();
+    const params = new URLSearchParams(search);
+
+
 	const [airlines, setAirlines] = useState([]);
 	const [defaultCosts, setDefaultCosts] = useState([20000, 40000])
 	const [defaultDurations, setDefaultDurations] = useState([60, 600]);
+	const [defaultDepartureTimes, setDefaultDepartureTimes] = useState([0, 24*60-1]);
+	const [defaultReturnTimes, setDefaultReturnTimes] = useState([0, 24*60-1]);
 	const [isFormReady, setIsFormReady] = useState(false);
 
 	useEffect(() => {
 		if (tickets && defaultCosts[0]  !== 20000 && defaultCosts[1] !== 40000 && defaultDurations[0] !== 60 && defaultDurations[1] !== 600 && airlines.length > 0){
-			console.log(tickets && defaultCosts  != [20000, 40000] && defaultDurations != [60, 600] && airlines != [])
-			console.log(tickets,defaultCosts,defaultDurations,airlines)
 			setIsFormReady(true)
 		}
 	}, [tickets, defaultCosts, defaultDurations, airlines])
 
 	useEffect(() => {
-		console.log(tickets)
 		if (!tickets?.length) return;
 
 		const airlinesMap = new Map();
@@ -80,7 +102,6 @@ export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLo
 		if (isFormReady){
 			return;
 		}
-		console.log(defaultCosts)
 		setValue("cost", defaultCosts)
 	}, [defaultCosts])
 
@@ -88,7 +109,6 @@ export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLo
 		if (isFormReady){
 			return;
 		}
-		console.log(defaultDurations)
 		setValue("duration", defaultDurations)
 	}, [defaultDurations])
 
@@ -98,7 +118,9 @@ export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLo
 			airlines,
 			duration: defaultDurations,
 			departure: [60, 44 * 60],
-			cost: defaultCosts
+			cost: defaultCosts,
+			departureTimes: defaultDepartureTimes,
+			returnTimes: defaultReturnTimes,
 		}
 	})
 
@@ -110,9 +132,6 @@ export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLo
 		}
 		setValue('airlines', airlines)
 	}, [airlines])
-
-	const { search } = useLocation();
-    const params = new URLSearchParams(search);
 
 	useEffect(() => {
 		if (!isFormReady){
@@ -126,7 +145,11 @@ export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLo
   .filter(a => a.checked)   // оставляем только те, где checked === true
   .map(a => a.value),
             departure_at: params.get('departure_at'),
+            departure_at_time_min: values.departureTimes[0],
+            departure_at_time_max: values.departureTimes[1],
             return_at: params.get('return_at'),
+            return_at_time_min: values.returnTimes[0],
+            return_at_time_max: values.returnTimes[1],
             adults: Number(params.get('adults')),
             childrens: Number(params.get('childrens')),
             infants: Number(params.get('infants')),
@@ -139,29 +162,35 @@ export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLo
   .map(t => t.value),
         };
 
-		console.log(payload, "payload")
-		console.log(isFormReady, "ready")
-		console.log(values, "values")
 		async function fetchTicketsWithFilters(payload){
 			setTicketsLoading(true)
 			const response = await fetchTickets(payload)
-			console.log(response)
 			if (response.status === 200){
-				setTickets(response.data)
+				setFilteredTickets(response.data)
 			}
 			setTicketsLoading(false)
 		}
 
 		if (!ticketsLoading){
-			console.log("fetching")
 			fetchTicketsWithFilters(payload)		
 		}
 
 	}, [values.airlines, values.cost, values.transfers, values.duration])
 
 	useEffect(() => {
-		console.log(ticketsLoading, "ticletsLoading")
-	}, [ticketsLoading])
+		setFilteredTickets(tickets.filter(ticket => {
+			const result = values.departureTimes[0] <= getMinutesFromISO(ticket.itineraries[0].departure_at) && getMinutesFromISO(ticket.itineraries[0].departure_at) <= values.departureTimes[1] &&
+			values.returnTimes[0] <= getMinutesFromISO(ticket.itineraries[ticket.itineraries.length - 1].return_at) && getMinutesFromISO(ticket.itineraries[ticket.itineraries.length - 1].return_at) <= values.returnTimes[1]
+			
+			console.log(ticket.itineraries[0].departure_at, getMinutesFromISO(ticket.itineraries[0].departure_at))
+			return result;
+		}
+		))
+		console.log(tickets.filter(ticket => 
+			values.departureTimes[0] <= getMinutesFromISO(ticket.itineraries[0].departure_at) <= values.departureTimes[1] &&
+			values.returnTimes[0] <= getMinutesFromISO(ticket.itineraries[ticket.itineraries.length - 1].return_at) <= values.returnTimes[1]
+		), "fewfw")
+	}, [ values.returnTimes, values.departureTimes])
 
 	const handleChange = (fieldName, value) => {
 		setValue(
@@ -214,6 +243,32 @@ export const TicketsFilter = ({tickets, setTickets, ticketsLoading, setTicketsLo
 						{values.duration[0] % 60}м до {Math.floor(values.duration[1] / 60)}ч{' '}
 						{values.duration[1] % 60 < 10 ? '0' : ''}
 						{values.duration[1] % 60}м
+					</div>
+				</Range>
+
+				<p>Время туда</p>
+				<Range
+					diapason={defaultDepartureTimes}
+					value={values.departureTimes}
+					setValue={setValue}
+					name={'departureTimes'}
+				>
+					<div>
+						с {formatMinutesToHHMM(values.departureTimes[0])}
+						 до {formatMinutesToHHMM(values.departureTimes[1])}
+					</div>
+				</Range>
+
+				<p>Время обратно</p>
+				<Range
+					diapason={defaultReturnTimes}
+					value={values.returnTimes}
+					setValue={setValue}
+					name={'returnTimes'}
+				>
+					<div>
+						с {formatMinutesToHHMM(values.returnTimes[0])}
+						 до {formatMinutesToHHMM(values.returnTimes[1])}
 					</div>
 				</Range>
 			</Dropdown>
